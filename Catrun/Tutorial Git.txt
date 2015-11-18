@@ -1,0 +1,12 @@
+git add .
+
+git commit -m "mensagem"
+
+git push -u origin master
+
+
+git pull origin master
+
+config --global user.name "username" e mesma coisa pro email
+
+
