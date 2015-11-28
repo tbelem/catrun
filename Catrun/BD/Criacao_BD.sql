@@ -135,6 +135,10 @@ CREATE TABLE OBSTACLE(
   obstacle_cod     INTEGER IDENTITY, -- CODIGO DO OBSTACULO
   obstacle_des     VARCHAR(30),      -- DESCRICAO DO OBSTACULO
   obstacle_prefab  VARCHAR(10),      -- PREFAB DO OBSTACULO
+  obstacle_ytop    FLOAT,			 -- POSICAO Y DA LANE SUPERIOR
+  obstacle_ymid    FLOAT,			 -- POSICAO Y DA LANE CENTRAL
+  obstacle_ybot    FLOAT,
+  obstacle_ctg	   INTEGER,			 -- POSICAO Y DA LANE INFERIOR
 
   CONSTRAINT PK_OBSTACLE PRIMARY KEY (obstacle_cod)
 );
