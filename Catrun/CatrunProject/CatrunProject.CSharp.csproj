@@ -74,11 +74,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Resources\Scripts\BackgroundController.cs" />
-    <Compile Include="Assets\Resources\Scripts\DatabaseControl.cs" />
-    <Compile Include="Assets\Resources\Scripts\ObstacleController.cs" />
-    <Compile Include="Assets\Resources\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Resources\Scripts\SpawnerController.cs" />
+    <Compile Include="Assets\Resources\Game\Scripts\BackgroundController.cs" />
+    <Compile Include="Assets\Resources\Game\Scripts\DatabaseControl.cs" />
+    <Compile Include="Assets\Resources\Game\Scripts\ObstacleController.cs" />
+    <Compile Include="Assets\Resources\Game\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Resources\Game\Scripts\SpawnerController.cs" />
+    <Compile Include="Assets\Resources\Interface\Scripts\DontDestroy.cs" />
+    <Compile Include="Assets\Resources\Interface\Scripts\LoginScript.cs" />
+    <Compile Include="Assets\Resources\Interface\Scripts\MainScript.cs" />
+    <Compile Include="Assets\Resources\Interface\Scripts\MissionScript.cs" />
+    <Compile Include="Assets\Resources\Interface\Scripts\StoreScript.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
