@@ -77,6 +77,10 @@ public class DatabaseControl {
                 {
                     lane = rdn.Next(1, 3);
                 }
+                if (ctg == 3) //bot e mid
+                {
+                    lane = 3;
+                }
 
                 string campo = "";
                 if (lane == 1)
@@ -110,10 +114,13 @@ public class DatabaseControl {
             myConnection.Close();
 
         }
-        catch (Exception e){ Debug.Log("ERRO getObstaculo: " + e.ToString()); }
+        catch (Exception e)
+        {
+            Debug.Log("ERRO getObstaculo: " + e.ToString());
+        }
     }
 
-    public string Login(string login, string password)
+    public int Login(string login, string password)
     {
 
 
@@ -121,21 +128,93 @@ public class DatabaseControl {
         {
             myConnection.Open();
 
-            SqlCommand myCommand = new SqlCommand("select USU_NOM from USUARIO WHERE USU_RA='"+login+ "' AND USU_SNH='"+password+ "';", myConnection);
+            SqlCommand myCommand = new SqlCommand("select player_cod from PLAYER WHERE player_lgn='"+login+ "' AND player_psw='"+password+ "';", myConnection);
 
             SqlDataReader myReader = myCommand.ExecuteReader();
             if (myReader.Read())
             {
-                return myReader["USU_NOM"].ToString();
+                myConnection.Close();
+                return (int)myReader["player_cod"];
             }
             else
             {
-                return "FALSE";
+                myConnection.Close();
+                return 0;
             }
+
         }
         catch (Exception e)
         {
-            return e.ToString();
+            Debug.Log("Erro Login: "+e.ToString());
+            myConnection.Close();
+            return 0;
+        }
+    }
+
+    public int verificaHiscore(int player, int score)
+    {
+        try
+        {
+            myConnection.Open();
+
+            SqlCommand myCommand = new SqlCommand("select 1 from player_currency where pc_player_cod = "+player+" AND pc_hgh_sco < "+score+";", myConnection);
+
+            SqlDataReader myReader = myCommand.ExecuteReader();
+            if (myReader.Read())
+            {
+                myConnection.Close();
+                return 1;
+            }
+            else
+            {
+                myConnection.Close();
+                return 0;
+            }
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Erro verificaHiscore: " + e.ToString());
+            myConnection.Close();
+            return 0;
+        }
+    }
+
+    public void gravaPartida(int player, int highscore, int money, int score, int obstacles, int powerups, int missions)
+    {
+        try
+        {
+            myConnection.Open();
+
+            string comando = "UPDATE PLAYER_CURRENCY SET ";
+            if (highscore == 1)
+            {
+                comando += "PC_HGH_SCO = " +score + ",";
+            }            
+            comando += "PC_CUR_MNY = PC_CUR_MNY + " + money;
+            comando += ", PC_TOT_MNY = PC_TOT_MNY + " + money;
+            comando += ", PC_TOT_SCO = PC_TOT_SCO + " + score;
+            comando += ", PC_TOT_OBS = PC_TOT_OBS + " + obstacles;
+            comando += ", PC_TOT_PUP = PC_TOT_PUP + " + powerups;
+            comando += ", PC_TOT_MTC = PC_TOT_MTC + " + 1;
+            comando += ", PC_TOT_MSS = PC_TOT_MSS + " + missions;
+            comando += " WHERE pc_player_cod = "+ player + " ;";
+
+            SqlCommand myCommand = new SqlCommand(comando, myConnection);
+
+            myCommand.ExecuteNonQuery();
+
+            comando = "INSERT INTO MATCH VALUES ("+player+",SYSDATETIME(),"+score+","+money+","+obstacles+","+powerups+");";
+
+            myCommand = new SqlCommand(comando, myConnection);
+
+            myCommand.ExecuteNonQuery();
+
+            myConnection.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.Log("ERRO gravaPartida: " + e.ToString());
         }
     }
 

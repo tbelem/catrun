@@ -9,18 +9,20 @@ public class PlayerController : MonoBehaviour {
     public float faixaBaixo;
     public float faixaMeio;
     public float velocidadeFaixa;
+    public float tamanhoPulo;
 
     private float alturaMaxima;
     private float alturaMinima;
     private int controlePulo;
 
     private float controleScoreTime;
-    private int   score;
     private TextMesh score_txt;
 
     private float ztop = 1;
     private float zmid = 0;
     private float zbot = -1;
+
+    private DatabaseControl db = new DatabaseControl();
 
 
     // Use this for initialization
@@ -41,7 +43,7 @@ public class PlayerController : MonoBehaviour {
             {
                 controlePulo = 1;
                 alturaMinima = transform.position.y;
-                alturaMaxima = alturaMinima + 1.2f;
+                alturaMaxima = alturaMinima + tamanhoPulo;
             }
         }
 
@@ -60,8 +62,8 @@ public class PlayerController : MonoBehaviour {
 
         //CONTROLE SCORE
         float tempscore = 50 * Time.deltaTime;
-        score += Convert.ToInt32(tempscore);            
-        score_txt.text = score.ToString();
+        GlobalsController.score += Convert.ToInt32(tempscore);            
+        score_txt.text = GlobalsController.score.ToString();
 
     }
 
@@ -126,7 +128,6 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Time.timeScale = 0;
-
+        Application.LoadLevel(6);
     }
 }

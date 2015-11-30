@@ -76,6 +76,8 @@
   <ItemGroup>
     <Compile Include="Assets\Resources\Game\Scripts\BackgroundController.cs" />
     <Compile Include="Assets\Resources\Game\Scripts\DatabaseControl.cs" />
+    <Compile Include="Assets\Resources\Game\Scripts\GameOverControl.cs" />
+    <Compile Include="Assets\Resources\Game\Scripts\GlobalsController.cs" />
     <Compile Include="Assets\Resources\Game\Scripts\ObstacleController.cs" />
     <Compile Include="Assets\Resources\Game\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Resources\Game\Scripts\SpawnerController.cs" />
