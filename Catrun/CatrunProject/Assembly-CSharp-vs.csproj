@@ -51,11 +51,13 @@
      <Compile Include="Assets\Resources\Game\Scripts\ObstacleController.cs" />
      <Compile Include="Assets\Resources\Game\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Resources\Game\Scripts\SpawnerController.cs" />
+     <Compile Include="Assets\Resources\Interface\Scripts\AchievementScript.cs" />
      <Compile Include="Assets\Resources\Interface\Scripts\DontDestroy.cs" />
      <Compile Include="Assets\Resources\Interface\Scripts\LoginScript.cs" />
      <Compile Include="Assets\Resources\Interface\Scripts\MainScript.cs" />
      <Compile Include="Assets\Resources\Interface\Scripts\MissionScript.cs" />
      <Compile Include="Assets\Resources\Interface\Scripts\StoreScript.cs" />
+     <Compile Include="Assets\Resources\Interface\Scripts\gameoverScript.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

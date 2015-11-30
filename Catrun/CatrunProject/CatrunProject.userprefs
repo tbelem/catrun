@@ -1,8 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Resources\Interface\Scripts\StoreScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Resources\Interface\Scripts\gameoverScript.cs">
     <Files>
-      <File FileName="Assets\Resources\Interface\Scripts\StoreScript.cs" Line="101" Column="29" />
+      <File FileName="Assets\Resources\Interface\Scripts\AchievementScript.cs" Line="29" Column="2" />
+      <File FileName="Assets\Resources\Interface\Scripts\StoreScript.cs" Line="18" Column="2" />
+      <File FileName="Assets\Resources\Interface\Scripts\gameoverScript.cs" Line="23" Column="32" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
