@@ -17,8 +17,8 @@ public class BackgroundController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        offset += Time.deltaTime;
-        fundo.SetTextureOffset("_MainTex", new Vector2(offset * velocidadeCenario, 0));
+        offset += velocidadeCenario * Time.deltaTime;
+        fundo.SetTextureOffset("_MainTex", new Vector2(offset, 0));
 	
 	}
 }

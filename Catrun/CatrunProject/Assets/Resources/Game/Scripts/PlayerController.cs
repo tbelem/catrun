@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour {
 
     private float controleScoreTime;
     private TextMesh score_txt;
+    private TextMesh coin_txt;
 
     private float ztop = 1;
     private float zmid = 0;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour {
 
         this.controlePulo = 0;
         score_txt = GameObject.Find("Score").GetComponent<TextMesh>();
+        coin_txt = GameObject.Find("CoinText").GetComponent<TextMesh>();
 
     }
 	
@@ -128,6 +130,15 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Application.LoadLevel(6);
+        if (other.tag == "Obstacle")
+        {
+            Application.LoadLevel(6);
+        }
+        if (other.tag == "Coin")
+        {
+            GlobalsController.money += 10;
+            coin_txt.text = GlobalsController.money.ToString();
+            Destroy(other.gameObject);
+        }
     }
 }

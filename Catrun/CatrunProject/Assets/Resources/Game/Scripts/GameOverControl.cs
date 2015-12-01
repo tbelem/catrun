@@ -9,7 +9,13 @@ public class GameOverControl : MonoBehaviour {
 	void Start () {
 
         int hs = db.verificaHiscore(GlobalsController.usercode,GlobalsController.score);
-        db.gravaPartida(GlobalsController.usercode,hs,0,GlobalsController.score,0,0,0);
+        db.gravaPartida(GlobalsController.usercode
+                       ,hs
+                       ,GlobalsController.money
+                       ,GlobalsController.score
+                       ,GlobalsController.obstacles
+                       ,GlobalsController.powerups
+                       ,GlobalsController.missions);
 
     }
 	

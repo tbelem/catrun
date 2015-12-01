@@ -24,6 +24,7 @@ public class ObstacleController : MonoBehaviour {
         if(transform.position.x <= -15)
         {
             Destroy(gameObject);
+            GlobalsController.obstacles++;
         }
 
     }

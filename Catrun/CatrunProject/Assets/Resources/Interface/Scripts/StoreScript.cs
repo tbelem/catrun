@@ -5,12 +5,14 @@ using UnityEngine.UI;
 public class StoreScript : MonoBehaviour {
 
 	storeElement[] element = new storeElement[10];
+	Text numMoedas;
 	Color invisible = new Color(0f, 0f, 0f, 0f);
 	Color visible = new Color(1f, 1f, 1f, 1f);
 	bool[] purchasedItems = new bool[10];
 	int selectedItem1 = -1;
 	int selectedItem2 = -1;
 	int[] itensValues = new int[10];
+	int coinCount;
 //	GameObject confirmacao;
 
 	void Awake () {
@@ -18,6 +20,9 @@ public class StoreScript : MonoBehaviour {
 		getPurchasedElements ();
 		getElementsPrice ();
 		getSelectedItem ();
+
+		numMoedas = GameObject.Find("numMoedas").GetComponent<Text>();
+		getCoins ();
 
 //		confirmacao = GameObject.Find ("Confirmacao").GetComponent<GameObject>();
 //		confirmacao.transform.localScale = new Vector3(0, 0, 0);
@@ -93,14 +98,20 @@ public class StoreScript : MonoBehaviour {
 				element[i].imagem.color = visible;
 			}
 		}
+		numMoedas.text = "Moedas $" + coinCount;
 	}
 
 	public void buyItem (int itemNum) {
 		Debug.Log ("buyItem (" + itemNum +")");
+		//codigo para gerenciar o dinheiro
 		//codigo para mudar o banco
-		purchasedItems [itemNum] = true;
 
-		resetSelection ();
+		if (coinCount >= itensValues [itemNum]) {
+			purchasedItems [itemNum] = true;
+			coinCount -= itensValues [itemNum];
+			resetSelection ();
+		}
+
 	}
 
 	public void onSelectFirst(int selected){
@@ -108,6 +119,8 @@ public class StoreScript : MonoBehaviour {
 		if (purchasedItems [selected]) {
 			selectedItem1 = selected;
 			resetSelection ();
+		} else {
+			buyItem(selected);
 		}
 	}
 
@@ -116,8 +129,13 @@ public class StoreScript : MonoBehaviour {
 		if (purchasedItems [selected]) {
 			selectedItem2 = selected;
 			resetSelection ();
+		} else {
+			buyItem(selected);
 		}
 	}
 
-
+	public void getCoins(){
+		//Codigo para pegar as moedas do banco
+		coinCount = 2000;
+	}
 }
