@@ -151,19 +151,19 @@ public class DatabaseControl {
         }
     }
 
-    public int verificaHiscore(int player, int score)
+    public int verificaHiscore(int player)
     {
         try
         {
             myConnection.Open();
 
-            SqlCommand myCommand = new SqlCommand("select 1 from player_currency where pc_player_cod = "+player+" AND pc_hgh_sco < "+score+";", myConnection);
+            SqlCommand myCommand = new SqlCommand("select pc_hgh_sco from player_currency where pc_player_cod = " + player+";", myConnection);
 
             SqlDataReader myReader = myCommand.ExecuteReader();
             if (myReader.Read())
             {
                 myConnection.Close();
-                return 1;
+                return (int)myReader["pc_hgh_sco"];
             }
             else
             {
@@ -178,6 +178,250 @@ public class DatabaseControl {
             myConnection.Close();
             return 0;
         }
+    }
+
+    public int getMoney(int player)
+    {
+        try
+        {
+            myConnection.Open();
+
+            SqlCommand myCommand = new SqlCommand("select pc_cur_mny from player_currency where pc_player_cod = " + player + ";", myConnection);
+
+            SqlDataReader myReader = myCommand.ExecuteReader();
+            if (myReader.Read())
+            {
+                myConnection.Close();
+                return (int)myReader["pc_cur_mny"];
+            }
+            else
+            {
+                myConnection.Close();
+                return 0;
+            }
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Erro getMoney: " + e.ToString());
+            myConnection.Close();
+            return 0;
+        }
+    }
+
+    public void getPlayerItens(ref StoreElement[] elements, int player)
+    {
+        try
+        {
+            myConnection.Open();
+
+            SqlCommand myCommand = new SqlCommand("select pi_item_cod,pi_flg_atv from PLAYER_ITEM where pi_player_cod = "+player+";", myConnection);
+
+            SqlDataReader myReader = myCommand.ExecuteReader();
+            while (myReader.Read())
+            {
+                int item = (int)myReader["pi_item_cod"];
+                elements[item - 1].purchased = true;
+
+                if((int)myReader["pi_flg_atv"] == 1)
+                {
+                  elements[item - 1].selected = true;
+                }
+                else
+                {
+                    elements[item - 1].selected = false;
+                }
+                
+            }
+
+            myConnection.Close();
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Erro getPlayerItens: " + e.ToString());
+            myConnection.Close();
+        }
+    }
+
+    public void selectItem(int item, int player, int ctg)
+    {
+        try
+        {
+            myConnection.Open();
+
+            string comando = "UPDATE PLAYER_ITEM SET pi_flg_atv = 0 WHERE pi_player_cod = " + player;
+            comando += " AND pi_item_cod IN (select item_cod from item where item_ctg = "+ctg+");";
+
+            SqlCommand myCommand = new SqlCommand(comando, myConnection);
+
+            myCommand.ExecuteNonQuery();
+
+            comando = "UPDATE PLAYER_ITEM SET pi_flg_atv = 1 WHERE pi_player_cod = " + player;
+            comando += " AND pi_item_cod = " + item + ";";
+
+            myCommand = new SqlCommand(comando, myConnection);
+
+            myCommand.ExecuteNonQuery();
+
+            myConnection.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.Log("ERRO selectItem: " + e.ToString());
+        }
+    }
+
+    public void buyItem(int item, int player)
+    {
+        try
+        {
+            myConnection.Open();
+
+            string comando = "INSERT INTO PLAYER_ITEM VALUES ("+player+","+item+",0);";
+
+            SqlCommand myCommand = new SqlCommand(comando, myConnection);
+
+            myCommand.ExecuteNonQuery();
+
+            myConnection.Close();
+
+            comando = "UPDATE PLAYER_CURRENCY SET pc_cur_mny = pc_cur_mny - "+getItemValue(item)+" WHERE pc_player_cod = "+player+";";
+
+            myConnection.Open();
+
+            myCommand = new SqlCommand(comando, myConnection);
+
+            myCommand.ExecuteNonQuery();
+
+            myConnection.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.Log("ERRO buyItem: " + e.ToString());
+        }
+
+    }
+
+    public int getItemValue(int item)
+    {
+        try
+        {
+            myConnection.Open();
+
+            SqlCommand myCommand = new SqlCommand("select item_vlr from item where item_cod = " + item + ";", myConnection);
+
+            SqlDataReader myReader = myCommand.ExecuteReader();
+            if (myReader.Read())
+            {
+                myConnection.Close();
+                return (int)myReader["item_vlr"];
+            }
+            else
+            {
+                myConnection.Close();
+                return 0;
+            }
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Erro getItemValue: " + e.ToString());
+            myConnection.Close();
+            return 0;
+        }
+
+    }
+
+    public int getItemCateg(int item)
+    {
+        try
+        {
+            myConnection.Open();
+
+            SqlCommand myCommand = new SqlCommand("select item_ctg from item where item_cod = " + item + ";", myConnection);
+
+            SqlDataReader myReader = myCommand.ExecuteReader();
+            if (myReader.Read())
+            {
+                myConnection.Close();
+                return (int)myReader["item_ctg"];
+            }
+            else
+            {
+                myConnection.Close();
+                return 0;
+            }
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Erro getItemCateg: " + e.ToString());
+            myConnection.Close();
+            return 0;
+        }
+
+    }
+
+    private string buscaSpriteItem(int item)
+    {
+        try
+        {
+            SqlCommand myCommand = new SqlCommand("select item_pfb from item where item_cod = " + item + ";", myConnection);
+
+            SqlDataReader myReader = myCommand.ExecuteReader();
+            if (myReader.Read())
+            {
+                return myReader["item_pfb"].ToString();
+            }
+            else
+            {
+                return "none";
+            }
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Erro buscaSpriteItem: " + e.ToString());
+            myConnection.Close();
+            return "none";
+        }
+    }
+
+    public string buscaItemAtivo(int player,int categ)
+    {
+        try
+        {
+            myConnection.Open();
+
+            string comando = "select pi_item_cod from player_item where pi_player_cod = " + player;
+            comando += " AND pi_item_cod IN (select item_cod from item where item_ctg =" + categ + ")";
+            comando += " AND pi_flg_atv = 1;";
+            SqlCommand myCommand = new SqlCommand(comando, myConnection);
+
+            SqlDataReader myReader = myCommand.ExecuteReader();
+            if (myReader.Read())
+            {
+                int item = (int)myReader["pi_item_cod"];
+                myReader.Close();
+                string retorno = buscaSpriteItem(item);
+                myConnection.Close();
+                return retorno;
+            }
+            else
+            {
+                myConnection.Close();
+                return "none";
+            }
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Erro getItemCateg: " + e.ToString());
+            myConnection.Close();
+            return "none";
+        }
+
     }
 
     public void gravaPartida(int player, int highscore, int money, int score, int obstacles, int powerups, int missions)

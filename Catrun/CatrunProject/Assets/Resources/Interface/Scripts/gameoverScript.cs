@@ -7,20 +7,31 @@ public class gameoverScript : MonoBehaviour {
 	Text numMoedas;
 	Text pontos;
 
+    private DatabaseControl db = new DatabaseControl();
+
 	void Awake () {
 		numMoedas = GameObject.Find("TextMoedas").GetComponent<Text>();
 		pontos = GameObject.Find("TextPontos").GetComponent<Text>();
-		numMoedas.text = "$" + getMoedas ().ToString ();
-		pontos.text = getPontos ().ToString ();
-	}
+        numMoedas.text = GlobalsController.money.ToString();
+		pontos.text = GlobalsController.score.ToString();
 
-	public int getMoedas (){
-		//codigo para buscar do banco
-		return 500;
-	}
+        int hs = 0;
+        if (GlobalsController.score > db.verificaHiscore(GlobalsController.usercode))
+        {
+            GlobalsController.highscore = GlobalsController.score;
+            hs = 1;
+        }
+        else
+        {
+            hs = 0;
+        }
 
-	public int getPontos (){
-		//codigo para buscar do banco
-		return 10000;
-	}
+        db.gravaPartida(GlobalsController.usercode
+                       , hs
+                       , GlobalsController.money
+                       , GlobalsController.score
+                       , GlobalsController.obstacles
+                       , GlobalsController.powerups
+                       , GlobalsController.missions);
+    }
 }

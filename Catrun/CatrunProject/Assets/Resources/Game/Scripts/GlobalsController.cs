@@ -10,6 +10,9 @@ public class GlobalsController : MonoBehaviour {
     public static int powerups = 0;
     public static int missions = 0;
 
+    public static int totalmoney = 0;
+    public static int highscore = 0;
+
     // Use this for initialization
     void Start () {
 	

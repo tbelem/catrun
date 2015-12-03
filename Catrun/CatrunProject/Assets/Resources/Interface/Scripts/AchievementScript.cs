@@ -24,17 +24,13 @@ public class AchievementScript : MonoBehaviour {
 	public class achieventElement {
 		public Text texto;
 		public SpriteRenderer imagem;
-		public bool selected;
+		public bool selected = false;
 	}
 	
 	public void getSelectedItens () {
 		Debug.Log ("getSelectedItem ()");
 		//codigo par buscar no banco
-		element [1].selected = true;
-		element [3].selected = true;
-		element [5].selected = true;
-		element [7].selected = true;
-		element [9].selected = true;
+		element [4].selected = true;
 	}
 	
 	public void resetSelection () {

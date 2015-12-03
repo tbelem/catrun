@@ -29,9 +29,26 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        GlobalsController.missions = 0;
+        GlobalsController.money = 0;
+        GlobalsController.obstacles = 0;
+        GlobalsController.powerups = 0;
+        GlobalsController.score = 0;
+
         this.controlePulo = 0;
         score_txt = GameObject.Find("Score").GetComponent<TextMesh>();
         coin_txt = GameObject.Find("CoinText").GetComponent<TextMesh>();
+
+        string texture = db.buscaItemAtivo(GlobalsController.usercode,1);
+
+        if (texture == "none")
+        {
+            GameObject.Find("playerhat").GetComponent<SpriteRenderer>().sprite = null;
+        }
+        else
+        {
+            GameObject.Find("playerhat").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Game/Textures/"+texture);
+        }
 
     }
 	

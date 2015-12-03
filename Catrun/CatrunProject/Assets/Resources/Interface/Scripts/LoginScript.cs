@@ -23,8 +23,7 @@ public class LoginScript : MonoBehaviour {
 
         GlobalsController.usercode = db.Login(mLogin, mSenha);
 
-        if (GlobalsController.usercode == 1) {
-			Debug.Log ("Login e senha corretos");
+        if (GlobalsController.usercode != 0) {
 			Application.LoadLevel("mainScreen");
 		} else {
 			Debug.Log ("Login e senhas invalidos");
